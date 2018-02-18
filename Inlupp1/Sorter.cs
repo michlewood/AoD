@@ -25,56 +25,31 @@ namespace Inlupp1
 
             PrintList("QuickSort", QuickSort());
         }
-
-        private List<int> QuickSort()
+        #region Bubble
+        private List<int> BubbleSort()
         {
             List<int> listToSort = numbers.GetRange(0, numbers.Count);
-
-            if (listToSort.Count < 2) return listToSort;
-
-            int firstPivot = 5;
-            int pivotPoint = firstPivot;
-            SwitchElements(listToSort, pivotPoint, listToSort.Count-1);
-
-            listToSort = SortAroundPivot(listToSort, listToSort.Count - 1, out pivotPoint);
-            PrintList("firstPivot", listToSort);
-            firstPivot = pivotPoint;
-
-            List<int> partialList = listToSort.GetRange(0, pivotPoint);
-
-            partialList = SortAroundPivot(partialList, pivotPoint-1, out pivotPoint);
-            PrintList("partialList", partialList);
-
-            partialList = listToSort.GetRange(firstPivot+1, listToSort.Count - firstPivot-1);
-
-            partialList = SortAroundPivot(partialList, partialList.Count - 1, out pivotPoint);
-            PrintList("partialList", partialList);
-
-
-
-            return listToSort;
-        }
-
-        private List<int> SortAroundPivot(List<int> list, int pivot, out int pivotPoint)
-        {
-            Console.WriteLine($"pivotpoint: {list[pivot]}");
-
-            for (int i = 0; i < pivot; i++)
+            for (int i = listToSort.Count - 2; i >= 0; i--)
             {
-                bool biggerThanPivot = CompareElements(list[i], list[pivot]);
-                if (biggerThanPivot)
+                int current = i;
+                int compare = current + 1;
+                while (CompareElements(listToSort[current], listToSort[compare]))
                 {
-                    list.Add(list[i]);
-                    list.RemoveAt(i);
-                    pivot--;
-                    i--;
+                    listToSort = SwitchElements(listToSort, current, compare);
+
+                    if (current < listToSort.Count - 2)
+                    {
+                        current = compare;
+                        compare++;
+                    }
                 }
+
             }
-            pivotPoint = pivot;
-            return list;
-        }
+            return listToSort;
+        } 
+        #endregion
 
-
+        #region MergeSort
         private List<int> MergeSort()
         {
             List<int> list2A = numbers.GetRange(0, 2);
@@ -134,30 +109,60 @@ namespace Inlupp1
                 }
             }
             return listCombined;
-        }
+        } 
+        #endregion
 
-        private List<int> BubbleSort()
+        #region QuickSort
+        private List<int> QuickSort()
         {
             List<int> listToSort = numbers.GetRange(0, numbers.Count);
-            for (int i = listToSort.Count - 2; i >= 0; i--)
-            {
-                int current = i;
-                int compare = current + 1;
-                while (CompareElements(listToSort[current], listToSort[compare]))
-                {
-                    listToSort = SwitchElements(listToSort, current, compare);
 
-                    if (current < listToSort.Count - 2)
-                    {
-                        current = compare;
-                        compare++;
-                    }
-                }
+            if (listToSort.Count < 2) return listToSort;
 
-            }
+            int firstPivot = 5;
+            int pivotPoint = firstPivot;
+            SwitchElements(listToSort, pivotPoint, listToSort.Count - 1);
+
+            listToSort = SortAroundPivot(listToSort, listToSort.Count - 1, out pivotPoint);
+            PrintList("firstPivot", listToSort);
+            firstPivot = pivotPoint;
+
+            List<int> partialList = listToSort.GetRange(0, pivotPoint);
+
+            partialList = SortAroundPivot(partialList, pivotPoint - 1, out pivotPoint);
+            PrintList("partialList", partialList);
+
+            partialList = listToSort.GetRange(firstPivot + 1, listToSort.Count - firstPivot - 1);
+
+            partialList = SortAroundPivot(partialList, partialList.Count - 1, out pivotPoint);
+            PrintList("partialList", partialList);
+
+
+
             return listToSort;
         }
 
+        private List<int> SortAroundPivot(List<int> list, int pivot, out int pivotPoint)
+        {
+            Console.WriteLine($"pivotpoint: {list[pivot]}");
+
+            for (int i = 0; i < pivot; i++)
+            {
+                bool biggerThanPivot = CompareElements(list[i], list[pivot]);
+                if (biggerThanPivot)
+                {
+                    list.Add(list[i]);
+                    list.RemoveAt(i);
+                    pivot--;
+                    i--;
+                }
+            }
+            pivotPoint = pivot;
+            return list;
+        } 
+        #endregion
+
+        #region util
         private List<int> SwitchElements(List<int> listToSort, int current, int compare)
         {
             int temp = listToSort[current];
@@ -182,5 +187,6 @@ namespace Inlupp1
             }
             Console.WriteLine();
         }
+        #endregion
     }
 }
