@@ -5,26 +5,69 @@ namespace Inlupp1
 {
     internal class Sorter
     {
-        List<int> numbers = new List<int>() { 5, -3, 22, 9001, -105, -33, -88, 1004, 5832, -2602 };
+        List<int> numbers = new List<int> { 5, -3, 22, 9001, -105, -33, -88, 1004, 5832, -2602 };
+        //List<int> numbers = new List<int> { 0,1,2,3,4,5,6,7,8,9 };
+
         public Sorter()
         {
-            Start();
+            //Start();
+            Loopthrough(10);
+        }
+
+        private void Loopthrough(int timesToLoop)
+        {
+            var list = new List<int>();
+            for (int i = 0; i < timesToLoop; i++)
+            {
+                RandomNumbers(10);
+
+                Console.WriteLine($"Unsorted: {IsSorted(numbers)}");
+
+                list = BubbleSort();
+                Console.WriteLine($"BubbleSort: {IsSorted(list)}");
+
+                list = MergeSort();
+                Console.WriteLine($"MergeSort: {IsSorted(list)}");
+
+                list = QuickSort();
+                Console.WriteLine($"QuickSort: {IsSorted(list)}");
+                Console.WriteLine();
+            }
         }
 
         private void Start()
         {
-            //PrintList("Unsorted", numbers);
-
-            //PrintList("BubbleSort", BubbleSort());
-
-            //PrintList("Unsorted", numbers);
-
-            //PrintList("MergeSort", MergeSort());
+            //RandomNumbers(10);
+            var list = new List<int>();
 
             PrintList("Unsorted", numbers);
+            Console.WriteLine($"Is sorted: {IsSorted(numbers)}");
 
-            PrintList("QuickSort", QuickSort());
+            Console.WriteLine();
+
+            list = BubbleSort();
+            PrintList("BubbleSort", list);
+            Console.WriteLine($"Is sorted: {IsSorted(list)}");
+
+            Console.WriteLine();
+
+            list = MergeSort();
+            PrintList("MergeSort", list);
+            Console.WriteLine($"Is sorted: {IsSorted(list)}");
+
+            Console.WriteLine();
+
+            list = MergeSort2();
+            PrintList("MergeSort2", list);
+            Console.WriteLine($"Is sorted: {IsSorted(list)}");
+
+            Console.WriteLine();
+
+            list = QuickSort();
+            PrintList("QuickSort", list);
+            Console.WriteLine($"Is sorted: {IsSorted(list)}");
         }
+
         #region Bubble
         private List<int> BubbleSort()
         {
@@ -46,25 +89,20 @@ namespace Inlupp1
 
             }
             return listToSort;
-        } 
+        }
         #endregion
 
         #region MergeSort
         private List<int> MergeSort()
         {
-            List<int> list2A = numbers.GetRange(0, 2);
-            List<int> list2B = numbers.GetRange(2, 2);
-            List<int> list2C = numbers.GetRange(4, 2);
-            List<int> list2D = numbers.GetRange(6, 2);
-            List<int> list2E = numbers.GetRange(8, 2);
 
-            PrintList("unsorted", list2A);
-            list2A = SecondSort(list2A.GetRange(0, 1), list2A.GetRange(1, 1));
-            list2B = SecondSort(list2B.GetRange(0, 1), list2B.GetRange(1, 1));
-            list2C = SecondSort(list2C.GetRange(0, 1), list2C.GetRange(1, 1));
-            list2D = SecondSort(list2D.GetRange(0, 1), list2D.GetRange(1, 1));
-            list2E = SecondSort(list2E.GetRange(0, 1), list2E.GetRange(1, 1));
-            PrintList("sorted", list2A);
+            //PrintList("unsorted", list2A);
+            List<int> list2A = SecondSort(numbers.GetRange(0, 1), numbers.GetRange(1, 1));
+            List<int> list2B = SecondSort(numbers.GetRange(2, 1), numbers.GetRange(3, 1));
+            List<int> list2C = SecondSort(numbers.GetRange(4, 1), numbers.GetRange(5, 1));
+            List<int> list2D = SecondSort(numbers.GetRange(6, 1), numbers.GetRange(7, 1));
+            List<int> list2E = SecondSort(numbers.GetRange(8, 1), numbers.GetRange(9, 1));
+            //PrintList("sorted", list2A);
 
             List<int> list4A = SecondSort(list2A, list2B);
             List<int> list4B = SecondSort(list2C, list2D);
@@ -74,6 +112,22 @@ namespace Inlupp1
             List<int> listToSort = SecondSort(List8, list2E);
 
             return listToSort;
+        }
+
+        private List<int> MergeSort2()
+        {
+            return SecondSort(
+                SecondSort(
+                    SecondSort(
+                        SecondSort(numbers.GetRange(0, 1), numbers.GetRange(1, 1)),
+                        SecondSort(numbers.GetRange(2, 1), numbers.GetRange(3, 1))
+                    ),
+                    SecondSort(
+                        SecondSort(numbers.GetRange(4, 1), numbers.GetRange(5, 1)),
+                        SecondSort(numbers.GetRange(6, 1), numbers.GetRange(7, 1))
+                    )
+                ),
+                SecondSort(numbers.GetRange(8, 1), numbers.GetRange(9, 1)));
         }
 
         private List<int> SecondSort(List<int> list1, List<int> list2)
@@ -97,6 +151,7 @@ namespace Inlupp1
                     listCombined.Add(list1[list1ToCompare]);
                     list1ToCompare++;
                 }
+
                 if (list2ToCompare == list2.Count)
                 {
                     listCombined.AddRange(list1.GetRange(list1ToCompare, list1.Count - list1ToCompare));
@@ -109,7 +164,7 @@ namespace Inlupp1
                 }
             }
             return listCombined;
-        } 
+        }
         #endregion
 
         #region QuickSort
@@ -119,50 +174,68 @@ namespace Inlupp1
 
             if (listToSort.Count < 2) return listToSort;
 
-            int firstPivot = 5;
-            int pivotPoint = firstPivot;
-            SwitchElements(listToSort, pivotPoint, listToSort.Count - 1);
+            //int firstPivot = listToSort.Count/2;
+            //int pivotPoint = firstPivot;
+            //SwitchElements(listToSort, pivotPoint, listToSort.Count - 1);
 
-            listToSort = SortAroundPivot(listToSort, listToSort.Count - 1, out pivotPoint);
-            PrintList("firstPivot", listToSort);
-            firstPivot = pivotPoint;
-
-            List<int> partialList = listToSort.GetRange(0, pivotPoint);
-
-            partialList = SortAroundPivot(partialList, pivotPoint - 1, out pivotPoint);
-            PrintList("partialList", partialList);
-
-            partialList = listToSort.GetRange(firstPivot + 1, listToSort.Count - firstPivot - 1);
-
-            partialList = SortAroundPivot(partialList, partialList.Count - 1, out pivotPoint);
-            PrintList("partialList", partialList);
-
-
+            listToSort = RecursiveSortMethod(listToSort);
 
             return listToSort;
         }
 
-        private List<int> SortAroundPivot(List<int> list, int pivot, out int pivotPoint)
+        private List<int> RecursiveSortMethod(List<int> listToSort)
         {
-            Console.WriteLine($"pivotpoint: {list[pivot]}");
-
+            int pivot = listToSort.Count - 1;
             for (int i = 0; i < pivot; i++)
             {
-                bool biggerThanPivot = CompareElements(list[i], list[pivot]);
+                bool biggerThanPivot = CompareElements(listToSort[i], listToSort[pivot]);
                 if (biggerThanPivot)
                 {
-                    list.Add(list[i]);
-                    list.RemoveAt(i);
+                    listToSort.Add(listToSort[i]);
+                    listToSort.RemoveAt(i);
                     pivot--;
                     i--;
                 }
             }
-            pivotPoint = pivot;
-            return list;
-        } 
+            if (!IsSorted(listToSort))
+            {
+                if (!IsSorted(listToSort.GetRange(0, pivot)))
+                {
+                    var partialList = RecursiveSortMethod(listToSort.GetRange(0, pivot));
+                    listToSort.RemoveRange(0, pivot);
+                    listToSort.InsertRange(0, partialList);
+                }
+                if (!IsSorted(listToSort.GetRange(pivot + 1, listToSort.Count - pivot - 1)))
+                {
+                    var partialList = RecursiveSortMethod(listToSort.GetRange(pivot + 1, listToSort.Count - pivot - 1));
+                    listToSort.RemoveRange(pivot + 1, listToSort.Count - pivot - 1);
+                    listToSort.InsertRange(pivot + 1, partialList);
+                }
+            }
+            return listToSort;
+        }
         #endregion
 
-        #region util
+        #region Util
+
+        private void RandomNumbers(int listLength)
+        {
+            Random rng = new Random();
+            numbers.Clear();
+            for (int i = 0; i < listLength; i++)
+            {
+                numbers.Add(rng.Next(-10000, 10000));
+            }
+        }
+
+        private bool IsSorted(List<int> list)
+        {
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                if (list[i] > list[i + 1]) return false;
+            }
+            return true;
+        }
         private List<int> SwitchElements(List<int> listToSort, int current, int compare)
         {
             int temp = listToSort[current];
@@ -178,10 +251,10 @@ namespace Inlupp1
             else return false;
         }
 
-        private void PrintList(string nameOfArray, List<int> array)
+        private void PrintList(string nameOfList, List<int> List)
         {
-            Console.WriteLine($"{nameOfArray}:");
-            foreach (var number in array)
+            Console.WriteLine($"{nameOfList}:");
+            foreach (var number in List)
             {
                 Console.Write($"{number}, ");
             }
