@@ -6,7 +6,6 @@ namespace Inlupp1
     internal class Sorter
     {
         List<int> numbers = new List<int> { 5, -3, 22, 9001, -105, -33, -88, 1004, 5832, -2602 };
-        //List<int> numbers = new List<int> { 0,1,2,3,4,5,6,7,8,9 };
 
         public Sorter()
         {
@@ -20,18 +19,24 @@ namespace Inlupp1
             for (int i = 0; i < timesToLoop; i++)
             {
                 RandomNumbers(10);
+                Console.WriteLine($"current loop: {i+1}");
 
                 Console.WriteLine($"Unsorted: {IsSorted(numbers)}");
 
                 list = BubbleSort();
                 Console.WriteLine($"BubbleSort: {IsSorted(list)}");
+                if (!IsSorted(list)) break;
 
                 list = MergeSort();
                 Console.WriteLine($"MergeSort: {IsSorted(list)}");
+                if (!IsSorted(list)) break;
 
                 list = QuickSort();
                 Console.WriteLine($"QuickSort: {IsSorted(list)}");
+                if (!IsSorted(list)) break;
+
                 Console.WriteLine();
+
             }
         }
 
@@ -173,10 +178,6 @@ namespace Inlupp1
             List<int> listToSort = numbers.GetRange(0, numbers.Count);
 
             if (listToSort.Count < 2) return listToSort;
-
-            //int firstPivot = listToSort.Count/2;
-            //int pivotPoint = firstPivot;
-            //SwitchElements(listToSort, pivotPoint, listToSort.Count - 1);
 
             listToSort = RecursiveSortMethod(listToSort);
 
