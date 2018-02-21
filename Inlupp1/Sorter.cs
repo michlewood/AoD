@@ -9,7 +9,7 @@ namespace Inlupp1
 
         public Sorter()
         {
-            //Start();
+            Start();
             Loopthrough(10);
         }
 
@@ -18,8 +18,8 @@ namespace Inlupp1
             var list = new List<int>();
             for (int i = 0; i < timesToLoop; i++)
             {
-                RandomNumbers(10);
-                Console.WriteLine($"current loop: {i+1}");
+                RandomNumbers(15);
+                Console.WriteLine($"current loop: {i + 1}");
 
                 Console.WriteLine($"Unsorted: {IsSorted(numbers)}");
 
@@ -27,7 +27,7 @@ namespace Inlupp1
                 Console.WriteLine($"BubbleSort: {IsSorted(list)}");
                 if (!IsSorted(list)) break;
 
-                list = MergeSort();
+                list = MergeSort2();
                 Console.WriteLine($"MergeSort: {IsSorted(list)}");
                 if (!IsSorted(list)) break;
 
@@ -42,7 +42,7 @@ namespace Inlupp1
 
         private void Start()
         {
-            //RandomNumbers(10);
+            RandomNumbers(10);
             var list = new List<int>();
 
             PrintList("Unsorted", numbers);
@@ -56,15 +56,15 @@ namespace Inlupp1
 
             Console.WriteLine();
 
-            list = MergeSort();
+            list = MergeSort2();
             PrintList("MergeSort", list);
             Console.WriteLine($"Is sorted: {IsSorted(list)}");
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
-            list = MergeSort2();
-            PrintList("MergeSort2", list);
-            Console.WriteLine($"Is sorted: {IsSorted(list)}");
+            //list = MergeSort2();
+            //PrintList("MergeSort2", list);
+            //Console.WriteLine($"Is sorted: {IsSorted(list)}");
 
             Console.WriteLine();
 
@@ -98,28 +98,8 @@ namespace Inlupp1
         #endregion
 
         #region MergeSort
+
         private List<int> MergeSort()
-        {
-
-            //PrintList("unsorted", list2A);
-            List<int> list2A = SecondSort(numbers.GetRange(0, 1), numbers.GetRange(1, 1));
-            List<int> list2B = SecondSort(numbers.GetRange(2, 1), numbers.GetRange(3, 1));
-            List<int> list2C = SecondSort(numbers.GetRange(4, 1), numbers.GetRange(5, 1));
-            List<int> list2D = SecondSort(numbers.GetRange(6, 1), numbers.GetRange(7, 1));
-            List<int> list2E = SecondSort(numbers.GetRange(8, 1), numbers.GetRange(9, 1));
-            //PrintList("sorted", list2A);
-
-            List<int> list4A = SecondSort(list2A, list2B);
-            List<int> list4B = SecondSort(list2C, list2D);
-
-            List<int> List8 = SecondSort(list4A, list4B);
-
-            List<int> listToSort = SecondSort(List8, list2E);
-
-            return listToSort;
-        }
-
-        private List<int> MergeSort2()
         {
             return SecondSort(
                 SecondSort(
@@ -133,6 +113,24 @@ namespace Inlupp1
                     )
                 ),
                 SecondSort(numbers.GetRange(8, 1), numbers.GetRange(9, 1)));
+        }
+
+        private List<int> MergeSort2()
+        {
+            List<int> listToSort = Divide(numbers);
+
+            return listToSort;
+        }
+
+        private List<int> Divide(List<int> list)
+        {
+            List<int> newList1 = list.GetRange(0, list.Count / 2 + list.Count % 2);
+            List<int> newList2 = list.GetRange(list.Count / 2 + list.Count % 2, list.Count / 2);
+
+            if (newList1.Count >= 2) newList1 = Divide(list.GetRange(0, list.Count / 2 + list.Count % 2));
+            if (newList2.Count >= 2) newList2 = Divide(list.GetRange(list.Count / 2 + list.Count % 2, list.Count / 2));
+
+            return SecondSort(newList1, newList2);
         }
 
         private List<int> SecondSort(List<int> list1, List<int> list2)
@@ -237,6 +235,7 @@ namespace Inlupp1
             }
             return true;
         }
+
         private List<int> SwitchElements(List<int> listToSort, int current, int compare)
         {
             int temp = listToSort[current];
