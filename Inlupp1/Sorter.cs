@@ -7,12 +7,12 @@ namespace Inlupp1
     internal class Sorter
     {
         List<int> numbers = new List<int> { 5, -3, 22, 9001, -105, -33, -88, 1004, 5832, -2602 };
-        volatile int timesToLoop = 500;
+        volatile int timesToLoop = 100;
 
         public Sorter()
         {
-            Start();
-            //Loopthrough();
+            //Start();
+            Loopthrough();
         }
 
         private void Loopthrough()
@@ -26,9 +26,17 @@ namespace Inlupp1
             long slowestMerge = -1;
             long averageMerge = 0;
 
+            long fastestMerge1 = long.MaxValue;
+            long slowestMerge1 = -1;
+            long averageMerge1 = 0;
+
             long fastestQuick = long.MaxValue;
             long slowestQuick = -1;
             long averageQuick = 0;
+
+            long fastestAQuick = long.MaxValue;
+            long slowestAQuick = -1;
+            long averageAQuick = 0;
 
             var list = new List<int>();
             int currentLoop = 0;
@@ -38,22 +46,22 @@ namespace Inlupp1
             for (int i = 1; i <= timesToLoop; i++)
             {
                 currentLoop = i;
-                RandomNumbers(20000);
+                RandomNumbers(50000);
                 Console.WriteLine($"current loop: {currentLoop}");
-
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 Console.WriteLine($"Is sorted from start: {!IsSorted(numbers)}");
 
-                Console.WriteLine("Bubble sort: ");
-                var watch = System.Diagnostics.Stopwatch.StartNew();
-                list = BubbleSort();
-                watch.Stop();
-                isSorted = IsSorted(list);
-                Console.WriteLine($"Is sorted: {isSorted}");
-                Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
-                if (watch.ElapsedMilliseconds < fastestBubble) fastestBubble = watch.ElapsedMilliseconds;
-                if (watch.ElapsedMilliseconds > slowestBubble) slowestBubble = watch.ElapsedMilliseconds;
-                averageBubble += watch.ElapsedMilliseconds;
-                if (!isSorted) break;
+                //Console.WriteLine("Bubble sort: ");
+                //var watch = System.Diagnostics.Stopwatch.StartNew();
+                //list = BubbleSort();
+                //watch.Stop();
+                //isSorted = IsSorted(list);
+                //Console.WriteLine($"Is sorted: {isSorted}");
+                //Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
+                //if (watch.ElapsedMilliseconds < fastestBubble) fastestBubble = watch.ElapsedMilliseconds;
+                //if (watch.ElapsedMilliseconds > slowestBubble) slowestBubble = watch.ElapsedMilliseconds;
+                //averageBubble += watch.ElapsedMilliseconds;
+                //if (!isSorted) break;
 
                 Console.WriteLine("Merge sort: ");
                 watch = System.Diagnostics.Stopwatch.StartNew();
@@ -67,21 +75,44 @@ namespace Inlupp1
                 averageMerge += watch.ElapsedMilliseconds;
                 if (!isSorted) break;
 
-                Console.WriteLine("Quick sort: ");
+                Console.WriteLine("Merge sort: ");
                 watch = System.Diagnostics.Stopwatch.StartNew();
-                list = QuickSort3();
+                list = MergeSort2();
                 watch.Stop();
                 isSorted = IsSorted(list);
                 Console.WriteLine($"Is sorted: {isSorted}");
                 Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
-                if (watch.ElapsedMilliseconds < fastestQuick) fastestQuick = watch.ElapsedMilliseconds;
-                if (watch.ElapsedMilliseconds > slowestQuick) slowestQuick = watch.ElapsedMilliseconds;
-                averageQuick += watch.ElapsedMilliseconds;
+                if (watch.ElapsedMilliseconds < fastestMerge) fastestMerge1 = watch.ElapsedMilliseconds;
+                if (watch.ElapsedMilliseconds > slowestMerge) slowestMerge1 = watch.ElapsedMilliseconds;
+                averageMerge1 += watch.ElapsedMilliseconds;
+                if (!isSorted) break;
+
+                //Console.WriteLine("Quick sort: ");
+                //watch = System.Diagnostics.Stopwatch.StartNew();
+                //list = QuickSort3();
+                //watch.Stop();
+                //isSorted = IsSorted(list);
+                //Console.WriteLine($"Is sorted: {isSorted}");
+                //Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
+                //if (watch.ElapsedMilliseconds < fastestQuick) fastestQuick = watch.ElapsedMilliseconds;
+                //if (watch.ElapsedMilliseconds > slowestQuick) slowestQuick = watch.ElapsedMilliseconds;
+                //averageQuick += watch.ElapsedMilliseconds;
+                //if (!isSorted) break;
+
+                Console.WriteLine("AQuick sort: ");
+                watch = System.Diagnostics.Stopwatch.StartNew();
+                list = ActualQuickSort();
+                watch.Stop();
+                isSorted = IsSorted(list);
+                Console.WriteLine($"Is sorted: {isSorted}");
+                Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
+                if (watch.ElapsedMilliseconds < fastestAQuick) fastestAQuick = watch.ElapsedMilliseconds;
+                if (watch.ElapsedMilliseconds > slowestAQuick) slowestAQuick = watch.ElapsedMilliseconds;
+                averageAQuick += watch.ElapsedMilliseconds;
                 if (!isSorted) break;
 
                 Console.WriteLine();
             }
-
             Console.WriteLine(
                 $"\nbubble sort:\n" +
                 $"fastest bubble sort: {fastestBubble}\n" +
@@ -91,19 +122,28 @@ namespace Inlupp1
                 $"fastest merge sort: {fastestMerge}\n" +
                 $"slowest merge sort: {slowestMerge}\n" +
                 $"average merge sort: {averageMerge / currentLoop}\n" +
+                $"\nmerge sort:\n" +
+                $"fastest merge sort: {fastestMerge1}\n" +
+                $"slowest merge sort: {slowestMerge1}\n" +
+                $"average merge sort: {averageMerge1 / currentLoop}\n" +
                 $"\nquick sort:\n" +
                 $"fastest quick sort: {fastestQuick}\n" +
                 $"slowest quick sort: {slowestQuick}\n" +
-                $"average quick sort: {averageQuick / currentLoop}\n"
+                $"average quick sort: {averageQuick / currentLoop}\n" +
+                $"\nAquick sort:\n" +
+                $"fastest quick sort: {fastestAQuick}\n" +
+                $"slowest quick sort: {slowestAQuick}\n" +
+                $"average quick sort: {averageAQuick / currentLoop}\n"
                 );
+
         }
 
         private void Start()
         {
 
-            numbers = ReadNumbersFromFile();
+            //numbers = ReadNumbersFromFile();
             List<string> output = new List<string>();
-            //RandomNumbers(1000);
+            RandomNumbers(1000);
             var list = new List<int>();
             output.Add(PrintList("Unsorted", numbers));
 
@@ -116,7 +156,7 @@ namespace Inlupp1
             list = BubbleSort();
             output.Add(PrintList("BubbleSort", list));
             output.Add($"Is sorted: {IsSorted(list)}");
-            Console.WriteLine(output[output.Count-1]);
+            Console.WriteLine(output[output.Count - 1]);
 
             output.Add("\n");
             Console.WriteLine();
@@ -129,7 +169,15 @@ namespace Inlupp1
             output.Add("\n");
             Console.WriteLine();
 
-            list = QuickSort();
+            list = ActualQuickSort();
+            output.Add(PrintList("QuickSort", list));
+            output.Add($"Is sorted: {IsSorted(list)}");
+            Console.WriteLine(output[output.Count - 1]);
+
+            output.Add("\n");
+            Console.WriteLine();
+
+            list = QuickSort3();
             output.Add(PrintList("QuickSort", list));
             output.Add($"Is sorted: {IsSorted(list)}");
             Console.WriteLine(output[output.Count - 1]);
@@ -184,7 +232,7 @@ namespace Inlupp1
         #region MergeSort
         private List<int> MergeSort3()
         {
-            List<int> listToSort = Divide(numbers);
+            List<int> listToSort = Divide3(numbers);
 
             return listToSort;
         }
@@ -241,6 +289,42 @@ namespace Inlupp1
         #endregion
 
         #region QuickSort
+        private List<int> ActualQuickSort()
+        {
+            List<int> listToSort = numbers.GetRange(0, numbers.Count);
+
+            if (listToSort.Count < 2) return listToSort;
+
+            int pivotPoint = listToSort.Count / 2 + 1;
+
+            listToSort = SwitchElements(listToSort, pivotPoint, listToSort.Count - 1);
+
+            listToSort = SortAroundPivot4(listToSort, 0, listToSort.Count / 2, listToSort.Count - 1);
+
+            return listToSort;
+        }
+
+        private List<int> SortAroundPivot4(List<int> listToSort, int start, int pivot, int end)
+        {
+            if (start >= end) return listToSort;
+            int wall = start;
+            listToSort = SwitchElements(listToSort, pivot, end);
+
+            for (int i = wall; i <= end; i++)
+            {
+                if (!CompareElements(listToSort[i], listToSort[end]))
+                {
+                    SwitchElements(listToSort, i, wall);
+                    wall++;
+                }
+            }
+
+            listToSort = SortAroundPivot4(listToSort, start, (start + wall - 2) / 2, wall - 2);
+            listToSort = SortAroundPivot4(listToSort, wall, (wall + end) / 2, end);
+
+            return listToSort;
+        }
+
         private List<int> QuickSort3()
         {
             List<int> listToSort = numbers.GetRange(0, numbers.Count);
@@ -253,10 +337,12 @@ namespace Inlupp1
 
         private List<int> SortAroundPivot3(List<int> listToSort)
         {
-            List<int> newList = new List<int>();
-
+            if (listToSort.Count < 2) return listToSort;
+            listToSort = SwitchElements(listToSort, listToSort.Count / 2, listToSort.Count - 1);
             int pivot = listToSort.Count - 1;
             int newPivot = 0;
+
+            List<int> newList = new List<int>();
             newList.Add(listToSort[pivot]);
             for (int i = 0; i < pivot; i++)
             {
@@ -270,18 +356,14 @@ namespace Inlupp1
                 }
             }
 
-            if (newList.GetRange(0, newPivot).Count > 1)
-            {
-                var partialList = SortAroundPivot3(newList.GetRange(0, newPivot));
-                newList.RemoveRange(0, newPivot);
-                newList.InsertRange(0, partialList);
-            }
-            if (newList.GetRange(newPivot + 1, newList.Count - newPivot - 1).Count > 1)
-            {
-                var partialList = SortAroundPivot3(newList.GetRange(newPivot + 1, newList.Count - newPivot - 1));
-                newList.RemoveRange(newPivot + 1, listToSort.Count - newPivot - 1);
-                newList.InsertRange(newPivot + 1, partialList);
-            }
+            var partialList = SortAroundPivot3(newList.GetRange(0, newPivot));
+            newList.RemoveRange(0, newPivot);
+            newList.InsertRange(0, partialList);
+
+            partialList = SortAroundPivot3(newList.GetRange(newPivot + 1, newList.Count - newPivot - 1));
+            newList.RemoveRange(newPivot + 1, listToSort.Count - newPivot - 1);
+            newList.InsertRange(newPivot + 1, partialList);
+
             return newList;
         }
         #endregion
@@ -418,6 +500,8 @@ namespace Inlupp1
 
         private List<int> SortAroundPivot2(List<int> listToSort)
         {
+            //    if (listToSort.Count == 1) return listToSort;
+            //    listToSort = SwitchElements(listToSort, listToSort.Count / 2 + 1, listToSort.Count - 1);
             int pivot = listToSort.Count - 1;
             for (int i = 0; i < pivot; i++)
             {
