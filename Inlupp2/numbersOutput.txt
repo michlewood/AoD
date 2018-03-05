@@ -1,0 +1,32 @@
+Unsorted - int: 
+5, -3, 22, 9001, -105, -33, -88, 1004, 5832, -2602, 321, 66, -3400, -32, 11, 9001, 51, -100, -1000, 211
+Is sorted: False
+unsorted - char: 
+a, e, q, b, w, w, u, i, l, p, r, v, z, o, a, f, n, m, x, y
+Is sorted: False
+----------------------------------------
+
+BubbleSort - int: 
+-3400, -2602, -1000, -105, -100, -88, -33, -32, -3, 5, 11, 22, 51, 66, 211, 321, 1004, 5832, 9001, 9001
+Is sorted: True
+BubbleSort - char: 
+a, a, b, e, f, i, l, m, n, o, p, q, r, u, v, w, w, x, y, z
+Is sorted: True
+----------------------------------------
+
+MergeSort - int: 
+-3400, -2602, -1000, -105, -100, -88, -33, -32, -3, 5, 11, 22, 51, 66, 211, 321, 1004, 5832, 9001, 9001
+Is sorted: True
+MergeSort - char: 
+a, a, b, e, f, i, l, m, n, o, p, q, r, u, v, w, w, x, y, z
+Is sorted: True
+----------------------------------------
+
+QuickSort - int: 
+-3400, -2602, -1000, -105, -100, -88, -33, -32, -3, 5, 11, 22, 51, 66, 211, 321, 1004, 5832, 9001, 9001
+Is sorted: True
+QuickSort - char: 
+a, a, b, e, f, i, l, m, n, o, p, q, r, u, v, w, w, x, y, z
+Is sorted: True
+----------------------------------------
+
