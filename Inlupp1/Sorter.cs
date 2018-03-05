@@ -6,13 +6,42 @@ namespace Inlupp1
 {
     internal class Sorter
     {
-        List<int> numbers = new List<int> { 5, -3, 22, 9001, -105, -33, -88, 1004, 5832, -2602 };
+        List<int> numbers = new List<int> { 5, -3, 22, 9001, -105, -33, -88, 1004, 5832, -2602, -106 };
+        //List<int> numbers = new List<int> { 5, -3, 22, 9001, -105, -33, -88, 1004 };
         volatile int timesToLoop = 50;
 
         public Sorter()
         {
             //Start();
-            Loopthrough();
+            //Loopthrough();
+            BinaryTree();
+        }
+
+        private void BinaryTree()
+        {
+            foreach (var item in numbers)
+            {
+                Console.Write($"{item}, ");
+            }
+            Console.WriteLine();
+            BinaryTreeNode firstNode = TreeSort();
+
+            //foreach (var item in firstNode.GetTree())
+            //{
+            //    Console.Write($"{item.Value}, ");
+            //}
+
+            firstNode.PrintTree(50, 2);
+        }
+
+        private BinaryTreeNode TreeSort()
+        {
+            BinaryTreeNode firstNode = new BinaryTreeNode(numbers[0]);
+            for (int i = 1; i < numbers.Count; i++)
+            {
+                firstNode.SetChild(new BinaryTreeNode(numbers[i]));
+            }
+            return firstNode;
         }
 
         private void Loopthrough()
@@ -26,10 +55,6 @@ namespace Inlupp1
             long slowestMerge = -1;
             long averageMerge = 0;
 
-            long fastestMerge1 = long.MaxValue;
-            long slowestMerge1 = -1;
-            long averageMerge1 = 0;
-
             long fastestQuick = long.MaxValue;
             long slowestQuick = -1;
             long averageQuick = 0;
@@ -37,6 +62,10 @@ namespace Inlupp1
             long fastestAQuick = long.MaxValue;
             long slowestAQuick = -1;
             long averageAQuick = 0;
+
+            long fastestBinaryTree = long.MaxValue;
+            long slowestBinaryTree = -1;
+            long averageBinaryTree = 0;
 
             var list = new List<int>();
             int currentLoop = 0;
@@ -46,60 +75,48 @@ namespace Inlupp1
             for (int i = 1; i <= timesToLoop; i++)
             {
                 currentLoop = i;
-                RandomNumbers(10000);
+                RandomNumbers(100000);
                 Console.WriteLine($"current loop: {currentLoop}");
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                Console.WriteLine($"Is sorted from start: {!IsSorted(numbers)}");
+                Console.WriteLine($"Is sorted from start: {IsSorted(numbers)}");
 
-                Console.WriteLine("Bubble sort: ");
-                watch = System.Diagnostics.Stopwatch.StartNew();
-                list = BubbleSort();
-                watch.Stop();
-                isSorted = IsSorted(list);
-                Console.WriteLine($"Is sorted: {isSorted}");
-                Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
-                if (watch.ElapsedMilliseconds < fastestBubble) fastestBubble = watch.ElapsedMilliseconds;
-                if (watch.ElapsedMilliseconds > slowestBubble) slowestBubble = watch.ElapsedMilliseconds;
-                averageBubble += watch.ElapsedMilliseconds;
-                if (!isSorted) break;
+                //Console.WriteLine("Bubble sort: ");
+                //watch = System.Diagnostics.Stopwatch.StartNew();
+                //list = BubbleSort();
+                //watch.Stop();
+                //isSorted = IsSorted(list);
+                //Console.WriteLine($"Is sorted: {isSorted}");
+                //Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
+                //if (watch.ElapsedMilliseconds < fastestBubble) fastestBubble = watch.ElapsedMilliseconds;
+                //if (watch.ElapsedMilliseconds > slowestBubble) slowestBubble = watch.ElapsedMilliseconds;
+                //averageBubble += watch.ElapsedMilliseconds;
+                //if (!isSorted) break;
 
-                Console.WriteLine("Merge sort: ");
-                watch = System.Diagnostics.Stopwatch.StartNew();
-                list = MergeSort2();
-                watch.Stop();
-                isSorted = IsSorted(list);
-                Console.WriteLine($"Is sorted: {isSorted}");
-                Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
-                if (watch.ElapsedMilliseconds < fastestMerge) fastestMerge = watch.ElapsedMilliseconds;
-                if (watch.ElapsedMilliseconds > slowestMerge) slowestMerge = watch.ElapsedMilliseconds;
-                averageMerge += watch.ElapsedMilliseconds;
-                if (!isSorted) break;
+                //Console.WriteLine("Merge sort: ");
+                //watch = System.Diagnostics.Stopwatch.StartNew();
+                //list = MergeSort2();
+                //watch.Stop();
+                //isSorted = IsSorted(list);
+                //Console.WriteLine($"Is sorted: {isSorted}");
+                //Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
+                //if (watch.ElapsedMilliseconds < fastestMerge) fastestMerge = watch.ElapsedMilliseconds;
+                //if (watch.ElapsedMilliseconds > slowestMerge) slowestMerge = watch.ElapsedMilliseconds;
+                //averageMerge += watch.ElapsedMilliseconds;
+                //if (!isSorted) break;
 
-                Console.WriteLine("Merge sort: ");
-                watch = System.Diagnostics.Stopwatch.StartNew();
-                list = MergeSort2();
-                watch.Stop();
-                isSorted = IsSorted(list);
-                Console.WriteLine($"Is sorted: {isSorted}");
-                Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
-                if (watch.ElapsedMilliseconds < fastestMerge) fastestMerge1 = watch.ElapsedMilliseconds;
-                if (watch.ElapsedMilliseconds > slowestMerge) slowestMerge1 = watch.ElapsedMilliseconds;
-                averageMerge1 += watch.ElapsedMilliseconds;
-                if (!isSorted) break;
+                //Console.WriteLine("False Quick sort: ");
+                //watch = System.Diagnostics.Stopwatch.StartNew();
+                //list = QuickSort3();
+                //watch.Stop();
+                //isSorted = IsSorted(list);
+                //Console.WriteLine($"Is sorted: {isSorted}");
+                //Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
+                //if (watch.ElapsedMilliseconds < fastestQuick) fastestQuick = watch.ElapsedMilliseconds;
+                //if (watch.ElapsedMilliseconds > slowestQuick) slowestQuick = watch.ElapsedMilliseconds;
+                //averageQuick += watch.ElapsedMilliseconds;
+                //if (!isSorted) break;
 
-                Console.WriteLine("Quick sort: ");
-                watch = System.Diagnostics.Stopwatch.StartNew();
-                list = QuickSort3();
-                watch.Stop();
-                isSorted = IsSorted(list);
-                Console.WriteLine($"Is sorted: {isSorted}");
-                Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
-                if (watch.ElapsedMilliseconds < fastestQuick) fastestQuick = watch.ElapsedMilliseconds;
-                if (watch.ElapsedMilliseconds > slowestQuick) slowestQuick = watch.ElapsedMilliseconds;
-                averageQuick += watch.ElapsedMilliseconds;
-                if (!isSorted) break;
-
-                Console.WriteLine("AQuick sort: ");
+                Console.WriteLine("Actual Quick sort: ");
                 watch = System.Diagnostics.Stopwatch.StartNew();
                 list = ActualQuickSort();
                 watch.Stop();
@@ -112,37 +129,52 @@ namespace Inlupp1
                 if (!isSorted) break;
 
                 Console.WriteLine();
+
+                Console.WriteLine("BinaryTree sort: ");
+                watch = System.Diagnostics.Stopwatch.StartNew();
+                BinaryTreeNode firstNode = TreeSort();
+                watch.Stop();
+                isSorted = IsSorted(firstNode.GetIntTree());
+                Console.WriteLine($"Is sorted: {isSorted}");
+                Console.WriteLine($"time taken: {watch.ElapsedMilliseconds} ms");
+                if (watch.ElapsedMilliseconds < fastestBinaryTree) fastestBinaryTree = watch.ElapsedMilliseconds;
+                if (watch.ElapsedMilliseconds > slowestBinaryTree) slowestBinaryTree = watch.ElapsedMilliseconds;
+                averageBinaryTree += watch.ElapsedMilliseconds;
+                if (!isSorted) break;
+
+                Console.WriteLine();
+
             }
             Console.WriteLine(
-                $"\nbubble sort:\n" +
-                $"fastest bubble sort: {fastestBubble}\n" +
-                $"slowest bubble sort: {slowestBubble}\n" +
-                $"average bubble sort: {averageBubble / currentLoop}\n" +
-                $"\nmerge sort:\n" +
-                $"fastest merge sort: {fastestMerge}\n" +
-                $"slowest merge sort: {slowestMerge}\n" +
-                $"average merge sort: {averageMerge / currentLoop}\n" +
-                $"\nmerge sort:\n" +
-                $"fastest merge sort: {fastestMerge1}\n" +
-                $"slowest merge sort: {slowestMerge1}\n" +
-                $"average merge sort: {averageMerge1 / currentLoop}\n" +
-                $"\nquick sort:\n" +
-                $"fastest quick sort: {fastestQuick}\n" +
-                $"slowest quick sort: {slowestQuick}\n" +
-                $"average quick sort: {averageQuick / currentLoop}\n" +
-                $"\nAquick sort:\n" +
-                $"fastest quick sort: {fastestAQuick}\n" +
-                $"slowest quick sort: {slowestAQuick}\n" +
-                $"average quick sort: {averageAQuick / currentLoop}\n"
+                //$"\nBubble sort:\n" +
+                //$"fastest bubble sort: {fastestBubble}\n" +
+                //$"slowest bubble sort: {slowestBubble}\n" +
+                //$"average bubble sort: {averageBubble / currentLoop}\n" +
+                //$"\nMerge sort:\n" +
+                //$"fastest merge sort: {fastestMerge}\n" +
+                //$"slowest merge sort: {slowestMerge}\n" +
+                //$"average merge sort: {averageMerge / currentLoop}\n" +
+                //$"\nFalse quick sort:\n" +
+                //$"fastest false quick sort: {fastestQuick}\n" +
+                //$"slowest false quick sort: {slowestQuick}\n" +
+                //$"average false quick sort: {averageQuick / currentLoop}\n" +
+                $"\nActual quick sort:\n" +
+                $"fastest actual quick sort: {fastestAQuick}\n" +
+                $"slowest actual quick sort: {slowestAQuick}\n" +
+                $"average actual quick sort: {averageAQuick / currentLoop}\n" +
+                $"\nBinaryTree sort:\n" +
+                $"fastest BinaryTree sort: {fastestBinaryTree}\n" +
+                $"slowest BinaryTree sort: {slowestBinaryTree}\n" +
+                $"average BinaryTree sort: {averageBinaryTree / currentLoop}\n"
                 );
 
         }
 
         private void Start()
         {
-            //numbers = ReadNumbersFromFile();
+            numbers = ReadNumbersFromFile();
             List<string> output = new List<string>();
-            RandomNumbers(3);
+            //RandomNumbers(3);
             var list = new List<int>();
 
             output.Add(PrintList("Unsorted", numbers));
@@ -162,6 +194,13 @@ namespace Inlupp1
             Console.WriteLine();
 
             list = MergeSort2();
+            output.Add(PrintList("MergeSort", list));
+            output.Add($"Is sorted: {IsSorted(list)}");
+            Console.WriteLine(output[output.Count - 1]);
+
+            output.Add("\n");
+            Console.WriteLine();
+            list = MergeSort3();
             output.Add(PrintList("MergeSort", list));
             output.Add($"Is sorted: {IsSorted(list)}");
             Console.WriteLine(output[output.Count - 1]);
@@ -271,10 +310,6 @@ namespace Inlupp1
 
             if (listToSort.Count < 2) return listToSort;
 
-            int pivotPoint = listToSort.Count / 2;
-
-            SwitchElements(listToSort, pivotPoint, listToSort.Count - 1);
-
             SortAroundPivot4(listToSort, 0, listToSort.Count / 2, listToSort.Count - 1);
 
             return listToSort;
@@ -297,7 +332,7 @@ namespace Inlupp1
 
             SortAroundPivot4(listToSort, start, (start + wall - 2) / 2, wall - 2);
             SortAroundPivot4(listToSort, wall, (wall + end) / 2, end);
-            
+
         }
         #endregion
 
@@ -305,20 +340,42 @@ namespace Inlupp1
 
         #region MergeSort
 
-        private List<int> MergeSort()
+        private List<int> MergeSort() // only works with list of size 10
         {
-            return SortAndMerge(
+            return
                 SortAndMerge(
                     SortAndMerge(
-                        SortAndMerge(numbers.GetRange(0, 1), numbers.GetRange(1, 1)),
-                        SortAndMerge(numbers.GetRange(2, 1), numbers.GetRange(3, 1))
+                        SortAndMerge(
+                            SortAndMerge(numbers.GetRange(0, 1), numbers.GetRange(1, 1)),
+                            SortAndMerge(numbers.GetRange(2, 1), numbers.GetRange(3, 1))
+                        ),
+                        SortAndMerge(
+                            SortAndMerge(numbers.GetRange(4, 1), numbers.GetRange(5, 1)),
+                            SortAndMerge(numbers.GetRange(6, 1), numbers.GetRange(7, 1))
+                        )
                     ),
-                    SortAndMerge(
-                        SortAndMerge(numbers.GetRange(4, 1), numbers.GetRange(5, 1)),
-                        SortAndMerge(numbers.GetRange(6, 1), numbers.GetRange(7, 1))
-                    )
-                ),
-                SortAndMerge(numbers.GetRange(8, 1), numbers.GetRange(9, 1)));
+                    SortAndMerge(numbers.GetRange(8, 1), numbers.GetRange(9, 1))
+                );
+        }
+
+        private List<int> MergeSort3() // only works with list of size 10
+        {
+            List<int> list = numbers.GetRange(0, numbers.Count);
+            for (int i = 1; i < 4; i++)
+            {
+                for (int j = 0; j < 8-i; j += i*2)
+                {
+                    list.InsertRange(j, SortAndMerge(list.GetRange(j, i), list.GetRange(j + i, i)));
+                    list.RemoveRange(j + i * 2, i * 2);
+                }
+            }
+
+            //for (int j = 0; j < 8; j += 2)
+            //{
+            //    Console.WriteLine(list.GetRange(j, 1)[0] + "," + list.GetRange(j + 1, 1)[0]);
+            //}
+
+            return list;
         }
         #endregion
 
