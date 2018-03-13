@@ -18,83 +18,57 @@ namespace Inlupp2
         private void Start()
         {
             ReadFromFiles();
-            List<string> output = new List<string>();
             //RandomNumbers(100);
-            var intList = new List<int>();
-            var charList = new List<char>();
-            output.AddRange(SortingMethodsClass<int>.PrintList("Unsorted - int", numbers));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
+
+            var output = new List<string>();
+
+            var bubbleIntList = new List<int>();
+            var bubbleCharList = new List<char>();
+            var mergeIntList = new List<int>();
+            var mergeCharList = new List<char>();
+            var quickIntList = new List<int>();
+            var quickCharList = new List<char>();
+
+            //Unsorted
+            output.AddRange(PrintList("Unsorted - int", numbers));
             output.Add($"Is sorted: {SortingMethodsClass<int>.IsSorted(numbers)}");
-            Console.WriteLine(output[output.Count - 1]);
-            output.AddRange(SortingMethodsClass<char>.PrintList("unsorted - char", chars));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
+
+            output.AddRange(PrintList("unsorted - char", chars));
             output.Add($"Is sorted: {SortingMethodsClass<char>.IsSorted(chars)}");
-            Console.WriteLine(output[output.Count - 1]);
 
-            output.Add("----------------------------------------");
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add("");
-            Console.WriteLine(output[output.Count - 1]);
+            //BubbleSort
+            bubbleIntList = SortingMethodsClass<int>.BubbleSort(numbers);
+            output.AddRange(PrintList("BubbleSort - int", bubbleIntList));
+            output.Add($"Is sorted: {SortingMethodsClass<int>.IsSorted(bubbleIntList)}");
 
-            intList = SortingMethodsClass<int>.BubbleSort(numbers);
-            output.AddRange(SortingMethodsClass<int>.PrintList("BubbleSort - int", intList));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add($"Is sorted: {SortingMethodsClass<int>.IsSorted(intList)}");
-            Console.WriteLine(output[output.Count - 1]);
-            charList = SortingMethodsClass<char>.BubbleSort(chars);
-            output.AddRange(SortingMethodsClass<char>.PrintList("BubbleSort - char", charList));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add($"Is sorted: {SortingMethodsClass<char>.IsSorted(charList)}");
-            Console.WriteLine(output[output.Count - 1]);
+            bubbleCharList = SortingMethodsClass<char>.BubbleSort(chars);
+            output.AddRange(PrintList("BubbleSort - char", bubbleCharList));
+            output.Add($"Is sorted: {SortingMethodsClass<char>.IsSorted(bubbleCharList)}");
 
-            output.Add("----------------------------------------");
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add("");
-            Console.WriteLine(output[output.Count - 1]);
+            //MergeSort
+            mergeIntList = SortingMethodsClass<int>.MergeSort(numbers);
+            output.AddRange(PrintList("MergeSort - int", mergeIntList));
+            output.Add($"Is sorted: {SortingMethodsClass<int>.IsSorted(mergeIntList)}");
 
-            intList = SortingMethodsClass<int>.MergeSort(numbers);
-            output.AddRange(SortingMethodsClass<int>.PrintList("MergeSort - int", intList));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add($"Is sorted: {SortingMethodsClass<int>.IsSorted(intList)}");
-            Console.WriteLine(output[output.Count - 1]);
-            charList = SortingMethodsClass<char>.MergeSort(chars);
-            output.AddRange(SortingMethodsClass<char>.PrintList("MergeSort - char", charList));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add($"Is sorted: {SortingMethodsClass<char>.IsSorted(charList)}");
-            Console.WriteLine(output[output.Count - 1]);
+            mergeCharList = SortingMethodsClass<char>.MergeSort(chars);
+            output.AddRange(PrintList("MergeSort - char", mergeCharList));
+            output.Add($"Is sorted: {SortingMethodsClass<char>.IsSorted(mergeCharList)}");
 
-            output.Add("----------------------------------------");
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add("");
-            Console.WriteLine(output[output.Count - 1]);
+            //QuickSort
+            quickIntList = SortingMethodsClass<int>.QuickSort(numbers);
+            output.AddRange(PrintList("QuickSort - int", quickIntList));
+            output.Add($"Is sorted: {SortingMethodsClass<int>.IsSorted(quickIntList)}");
 
-            intList = SortingMethodsClass<int>.QuickSort(numbers);
-            output.AddRange(SortingMethodsClass<int>.PrintList("QuickSort - int", intList));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add($"Is sorted: {SortingMethodsClass<int>.IsSorted(intList)}");
-            Console.WriteLine(output[output.Count - 1]);
-            charList = SortingMethodsClass<char>.QuickSort(chars);
-            output.AddRange(SortingMethodsClass<char>.PrintList("QuickSort - char", charList));
-            Console.WriteLine(output[output.Count - 2]);
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add($"Is sorted: {SortingMethodsClass<char>.IsSorted(charList)}");
-            Console.WriteLine(output[output.Count - 1]);
+            quickCharList = SortingMethodsClass<char>.QuickSort(chars);
+            output.AddRange(PrintList("QuickSort - char", quickCharList));
+            output.Add($"Is sorted: {SortingMethodsClass<char>.IsSorted(quickCharList)}");
 
-            output.Add("----------------------------------------");
-            Console.WriteLine(output[output.Count - 1]);
-            output.Add("");
-            Console.WriteLine(output[output.Count - 1]);
+            PrintOutput(output);
 
             WriteToFile(output.ToArray());
         }
-
+        
+        #region Util
         private void WriteToFile(string[] output)
         {
             System.IO.File.WriteAllLines($"{Environment.CurrentDirectory}/numbersOutput.txt", output);
@@ -129,8 +103,6 @@ namespace Inlupp2
             chars = letters;
         }
 
-        #region Util
-
         private void RandomNumbers(int listLength)
         {
             Random rng = new Random();
@@ -140,6 +112,35 @@ namespace Inlupp2
                 numbers.Add(rng.Next(-10000, 10000));
             }
         }
+
+        private void PrintOutput(List<string> output)
+        {
+            for (int i = 0; i < output.Count; i += 8)
+            {
+                Console.WriteLine(output[i]);
+                Console.WriteLine(output[i+1]);
+                Console.WriteLine(output[i+2]);
+                Console.WriteLine(output[i+3]);
+                Console.WriteLine(output[i+4]);
+                Console.WriteLine(output[i+5]);
+                output.Insert(i+6, "----------------------------------------");
+                Console.WriteLine(output[i+6]);
+                output.Insert(i + 7, "");
+                Console.WriteLine(output[i + 7]);
+            }
+        }
+
+        private string[] PrintList<T>(string nameOfList, List<T> List)
+        {
+            string[] outputString = new string[2];
+            outputString[0] = $"{nameOfList}: ";
+            foreach (var value in List)
+            {
+                outputString[1] += $"{value}, ";
+            }
+            outputString[1] = outputString[1].Remove(outputString[1].Length - 2);
+            return outputString;
+        }
         #endregion
     }
 
@@ -148,22 +149,21 @@ namespace Inlupp2
         static internal List<T> BubbleSort(List<T> listToSort)
         {
             List<T> newList = listToSort.GetRange(0, listToSort.Count);
-            for (int i = listToSort.Count - 2; i >= 0; i--)
+            for (int i = newList.Count - 2; i >= 0; i--)
             {
                 int current = i;
                 int compare = current + 1;
-                while (CompareElements(listToSort[current], listToSort[compare]))
+                while (CompareElements(newList[current], newList[compare]))
                 {
-                    listToSort = SwitchElements(listToSort, current, compare);
-
-                    if (current < listToSort.Count - 2)
+                    newList = SwitchElements(newList, current, compare);
+                    if (current < newList.Count - 2)
                     {
                         current = compare;
                         compare++;
                     }
                 }
             }
-            return listToSort;
+            return newList;
         }
 
         #region MergeSort
@@ -256,7 +256,6 @@ namespace Inlupp2
         #endregion
 
         #region Util
-
         internal static bool IsSorted(List<T> list)
         {
             if (list.GetType() == typeof(List<int>))
@@ -304,17 +303,6 @@ namespace Inlupp2
                 else return false;
             }
             throw new Exception("invalid input! Must be ints or chars!");
-        }
-        internal static string[] PrintList(string nameOfList, List<T> List)
-        {
-            string[] outputString = new string[2];
-            outputString[0] = $"{nameOfList}: ";
-            foreach (var value in List)
-            {
-                outputString[1] += $"{value}, ";
-            }
-            outputString[1] = outputString[1].Remove(outputString[1].Length - 2);
-            return outputString;
         }
         #endregion
     }
